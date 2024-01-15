@@ -12,3 +12,6 @@ class Status():
     operario: str 
     ancho: float 
     last_update: str
+
+    def dict(self):
+        return self.__dict__()

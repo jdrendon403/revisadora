@@ -6,7 +6,7 @@ from datetime import datetime
 from schemas.status import Status
 from schemas.user import User
 
-from utilities.array_u import array_subset
+from utilities.array_u import array_subset, chararraytofloat
 
 from dotenv import dotenv_values
 
@@ -47,7 +47,6 @@ class StatusComs():
         headers['Authorization'] = self.token
         data = json.dumps(self.status.__dict__)
         response = requests.put(url, data=data, headers=headers)
-        # print(response.status_code)
         return
     
     def read_status(self, m_client):
@@ -59,12 +58,13 @@ class StatusComs():
             self.status.cliente = ''.join(array_subset(regs.copy(), 20, 20))
             self.status.n_articulo = ''.join(array_subset(regs.copy(), 40, 20))
             self.status.color = ''.join(array_subset(regs.copy(), 100, 20))
-            self.status.peso = float(''.join(array_subset(regs.copy(), 200, 5)))
-            self.status.metros = float(''.join(array_subset(regs.copy(), 220, 5)))
-            self.status.n_rollo = int(''.join(array_subset(regs.copy(), 120, 5)))
-            self.status.rendimiento = float(''.join(array_subset(regs.copy(), 140, 20)))
+            self.status.peso = chararraytofloat(array_subset(regs.copy(), 200, 5))
+            self.status.metros = chararraytofloat(array_subset(regs.copy(), 220, 5))
+            self.status.n_rollo = int(chararraytofloat(array_subset(regs.copy(), 120, 5)))
+            self.status.rendimiento = chararraytofloat(array_subset(regs.copy(), 140, 20))
             self.status.operario = ''.join(array_subset(regs.copy(), 160, 20))
-            self.status.ancho = float(''.join(array_subset(regs.copy(), 180, 20)))
+            self.status.ancho = chararraytofloat(array_subset(regs.copy(), 180, 20))
+
             self.status.last_update = str(datetime.now())
             self.modbus = True
         else:
